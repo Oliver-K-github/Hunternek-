@@ -9,7 +9,7 @@ export default function Products() {
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
 
-    //termék lekérése
+    
     async function getProducts() {
         try {
             const response = await fetch("http://localhost:3001/api/products")
@@ -48,7 +48,7 @@ export default function Products() {
             setDescription("")
         }
     }
-    //Feltöltés vagy módosítás
+
     async function saveProduct(e) {
         e.preventDefault()
 

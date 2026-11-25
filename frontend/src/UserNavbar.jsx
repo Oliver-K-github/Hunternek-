@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from "react-router-dom"
 import Button from 'react-bootstrap/Button';
+import Users from './Users'
 
 export default function UserNavbar({ logout }) {
     const navigate = useNavigate()
@@ -19,7 +20,8 @@ export default function UserNavbar({ logout }) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">Kezdőlap</Nav.Link>
-                        <Button variant="primary" type="submit" onClick={handleLogout}>
+                        <Nav.Link as={Link} to="/users">Adatok módosítása</Nav.Link>
+                        <Button variant="primary" type="button" onClick={handleLogout}>
                             Kijelentkezés
                         </Button>
                     </Nav>

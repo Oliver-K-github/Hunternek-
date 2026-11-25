@@ -178,6 +178,81 @@ app.delete(
     }
   },
 );
+
+
+app.get("/api/users/:id",authMiddleware,async (req,res) => {
+  try { 
+    
+    const [users] = await db.query("SELECT id, name, role FROM users WHERE id = ?", [req.user.id]);
+
+    if(users.length === 0)
+    {
+      return res.status(500).json({message:"Nincs ilyen felhasznalo! "})
+    }
+    res.json(users[0])
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message: "Szerverhiba! "})
+  }
+});
+
+app.put("/api/profile" , authMiddleware, async (req,res) => {
+  try {
+    const id = req.user.id
+    const {name,email,password} = req.body
+
+    if (!name?.trim() || !email?.trim())
+    {
+      return res.status(400).json({message: "Nev es email cim megadasa kotelezo"})
+    }
+
+    const [users] = await db.query("SELECT id FROM users WHERE email = ? AND id != ?", [email.trim(), id])
+
+    if(users.length > 0)
+    {
+      return res.status(400).json({message: "Ez az email cim mar foglalt! "})
+    }
+
+    if(password)
+    {
+      if(typeof password !== "string" || password.length < 8)
+      {
+        return res.status(400).json({message: "A jelszonak legalabb 8 karakterbol kell allnia"})
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10)
+    await db.query("UPDATE users SET name= ?, email= ?, password = ? WHERE id = ?",
+      [name.trim(), email.trim(), hashedPassword, id]
+    )
+    }else
+    {
+      await db.query("UPDATE users SET name = ?, email = ? WHERE id = ?",
+        [
+          name.trim(),
+          email.trim(),
+          id
+        ]
+      )
+    }
+
+    res.json({message: "Profil modositva! ",
+      user: {
+        id:id,
+        name:name.trim(),
+        role:req.user.id
+      }
+    })
+
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({message: "Szerverhiba! "})
+  }
+})
+
+
+
 app.listen(PORT, () => {
   console.log(`A szerver sikeresen fut a következő porton: ${PORT}`);
 });

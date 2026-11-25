@@ -13,6 +13,7 @@ export default function GuestNavbar() {
                         <Nav.Link as={Link} to="/">Kezdőlap</Nav.Link>
                         <Nav.Link as={Link} to="/register">Regisztráció</Nav.Link>
                         <Nav.Link as={Link} to="/login">Bejelentkezés</Nav.Link>
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>

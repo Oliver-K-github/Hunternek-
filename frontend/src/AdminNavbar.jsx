@@ -20,6 +20,7 @@ export default function AdminNavbar({ logout }) {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/adminHome">Kezdőlap</Nav.Link>
                         <Nav.Link as={Link} to="/products">Termékek kezelése</Nav.Link>
+                        <Nav.Link as={Link} to="/users">Adatok modositasa</Nav.Link>
                         <Button variant="primary" type="submit" onClick={handleLogout}>
                             Kijelentkezés
                         </Button>
